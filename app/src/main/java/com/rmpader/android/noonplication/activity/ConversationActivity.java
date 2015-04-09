@@ -1,6 +1,5 @@
 package com.rmpader.android.noonplication.activity;
 
-import android.app.ActionBar;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -9,11 +8,12 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.rmpader.android.noonplication.R;
@@ -26,11 +26,11 @@ public class ConversationActivity extends ActionBarActivity implements LoaderMan
 
     public static final String ID_COLUMN = "_id";
     public static final String THREAD_ID_COLUMN = "thread_id";
-    public static final String DATE_SENT_COLUMN = "date_sent";
+    public static final String DATE_COLUMN = "date";
     public static final String BODY_COLUMN = "body";
     public static final String TYPE_COLUMN = "type";
     public static final String[] SELECT_COLUMNS = {
-            ID_COLUMN, DATE_SENT_COLUMN, BODY_COLUMN, TYPE_COLUMN
+            ID_COLUMN, DATE_COLUMN, BODY_COLUMN, TYPE_COLUMN
     };
 
     @Override
@@ -72,7 +72,7 @@ public class ConversationActivity extends ActionBarActivity implements LoaderMan
             case 1:
                 return new CursorLoader(context, allMessages, SELECT_COLUMNS, THREAD_ID_COLUMN + "=?", new String[]{
                         args.getString("threadId")
-                }, DATE_SENT_COLUMN + " desc");
+                }, DATE_COLUMN + " asc");
             default:
                 // An invalid id was passed in
                 return null;
@@ -82,29 +82,36 @@ public class ConversationActivity extends ActionBarActivity implements LoaderMan
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        LinearLayout scrollView = (LinearLayout) findViewById(R.id.Messages);
+        final LinearLayout messages = (LinearLayout) findViewById(R.id.Messages);
+        final ScrollView scrollView = (ScrollView) findViewById(R.id.MessagesScroll);
+        messages.removeAllViews();
         int i = 0;
         while (data.moveToNext()) {
             if (data.getString(data.getColumnIndex(TYPE_COLUMN)).equals("1")) {
-                getLayoutInflater().inflate(R.layout.message_in, scrollView, true);
-                View rootView = scrollView.getChildAt(i);
+                getLayoutInflater().inflate(R.layout.message_in, messages, true);
+                View rootView = messages.getChildAt(i);
                 TextView body = (TextView) rootView.findViewById(R.id.MessageIn);
-                body.setMaxWidth(scrollView.getWidth()/2);
+                body.setMaxWidth((int)(messages.getWidth() * 0.75f));
                 body.setText(data.getString(data.getColumnIndex(BODY_COLUMN)));
                 TextView time = (TextView) rootView.findViewById(R.id.TimeIn);
-                time.setText(formatText(data.getString(data.getColumnIndex(DATE_SENT_COLUMN))));
+                time.setText(formatText(data.getString(data.getColumnIndex(DATE_COLUMN))));
             } else {
-                getLayoutInflater().inflate(R.layout.message_out, scrollView, true);
-                View rootView = scrollView.getChildAt(i);
+                getLayoutInflater().inflate(R.layout.message_out, messages, true);
+                View rootView = messages.getChildAt(i);
                 TextView body = (TextView) rootView.findViewById(R.id.MessageOut);
-                body.setMaxWidth(scrollView.getWidth()/2);
+                body.setMaxWidth((int)(messages.getWidth() * 0.75f));
                 body.setText(data.getString(data.getColumnIndex(BODY_COLUMN)));
                 TextView time = (TextView) rootView.findViewById(R.id.TimeOut);
-                time.setText(formatText(data.getString(data.getColumnIndex(DATE_SENT_COLUMN))));
+                time.setText(formatText(data.getString(data.getColumnIndex(DATE_COLUMN))));
             }
             i++;
         }
-
+        scrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(View.FOCUS_DOWN);
+            }
+        });
     }
 
     private String formatText(String text) {
@@ -128,5 +135,8 @@ public class ConversationActivity extends ActionBarActivity implements LoaderMan
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+        final LinearLayout messages = (LinearLayout) findViewById(R.id.Messages);
+        Log.d("DERP", "DEEERRRP");
+        messages.removeAllViews();
     }
 }

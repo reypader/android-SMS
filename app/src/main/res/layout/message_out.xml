@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right"
+                android:orientation="horizontal"
                 android:paddingTop="3dp"
                 android:paddingBottom="3dp"
                 android:paddingRight="12dp"
@@ -11,6 +12,7 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="right"
         android:background="#ffb7b7b7"
         android:padding="8dp"
         >
@@ -22,8 +24,10 @@
             android:id="@+id/TimeOut"
 
             android:layout_below="@+id/MessageOut"
-            android:layout_alignRight="@+id/MessageOut"
-            android:layout_alignEnd="@+id/MessageOut"/>
+            android:layout_alignParentRight="@+id/MessageOut"
+            android:layout_alignParentEnd="@+id/MessageOut"
+            android:singleLine="true"
+           />
 
         <TextView
             android:layout_width="wrap_content"
@@ -31,9 +35,9 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/MessageOut"
             android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            />
+            android:layout_alignParentLeft="true"
+          />
     </RelativeLayout>
 
 </LinearLayout>

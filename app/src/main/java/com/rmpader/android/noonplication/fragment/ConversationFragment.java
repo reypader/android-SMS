@@ -1,6 +1,5 @@
 package com.rmpader.android.noonplication.fragment;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -18,7 +17,6 @@ import android.widget.TextView;
 
 import com.rmpader.android.noonplication.R;
 import com.rmpader.android.noonplication.activity.ConversationActivity;
-import com.rmpader.android.noonplication.sms.BareSMS;
 import com.rmpader.android.noonplication.sms.SMSThread;
 
 import java.text.DateFormat;
@@ -35,7 +33,7 @@ public class ConversationFragment extends ListFragment implements LoaderManager.
     public static final String ID_COLUMN = "_id";
     public static final String THREAD_ID_COLUMN = "thread_id";
     public static final String ADDRESS_COLUMN = "address";
-    public static final String DATE_SENT_COLUMN = "date_sent";
+    public static final String DATE_COLUMN = "date";
     public static final String READ_COLUMN = "read";
     public static final String BODY_COLUMN = "body";
     public static final String SEEN_COLUMN = "seen";
@@ -43,7 +41,7 @@ public class ConversationFragment extends ListFragment implements LoaderManager.
     public static final String[] SELECT_COLUMNS = {
             "distinct " + THREAD_ID_COLUMN,
             ADDRESS_COLUMN,
-            "max(" + DATE_SENT_COLUMN + ") as " + DATE_SENT_COLUMN,
+            "max(" + DATE_COLUMN + ") as " + DATE_COLUMN,
             READ_COLUMN,
             BODY_COLUMN,
             SEEN_COLUMN,
@@ -82,7 +80,7 @@ public class ConversationFragment extends ListFragment implements LoaderManager.
         Context context = getActivity();
         switch (id) {
             case URL_LOADER:
-                return new CursorLoader(context, allMessages, SELECT_COLUMNS, ADDRESS_COLUMN + " is not null) group by (" + THREAD_ID_COLUMN, null, DATE_SENT_COLUMN + " desc");
+                return new CursorLoader(context, allMessages, SELECT_COLUMNS, ADDRESS_COLUMN + " is not null) group by (" + THREAD_ID_COLUMN, null, DATE_COLUMN + " desc");
             default:
                 // An invalid id was passed in
                 return null;
@@ -93,7 +91,7 @@ public class ConversationFragment extends ListFragment implements LoaderManager.
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         SimpleCursorAdapter adapter = new SimpleCursorAdapter(getActivity(), R.layout.convo_row, data, new String[]{
-                ADDRESS_COLUMN, BODY_COLUMN, DATE_SENT_COLUMN,
+                ADDRESS_COLUMN, BODY_COLUMN, DATE_COLUMN,
         }, new int[]{R.id.person, R.id.body_preview, R.id.date_sent}) {
             @Override
             public void setViewText(TextView v, String text) {
