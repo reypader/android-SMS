@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:id="@+id/convo_row"
+              android:background="#fff6f6f6">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/person"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:autoText="false"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:paddingLeft="8sp"
+        android:paddingTop="2sp"
+        android:paddingRight="2sp"
+        android:paddingBottom="2sp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/body_preview"
+        android:layout_below="@+id/person"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="49dp"
+        android:layout_marginStart="49dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:paddingLeft="2sp"
+        android:paddingTop="2sp"
+        android:paddingRight="8sp"
+        android:paddingBottom="2sp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/date_sent"
+        android:layout_above="@+id/body_preview"
+        android:layout_alignRight="@+id/body_preview"
+        android:layout_alignEnd="@+id/body_preview"
+        android:paddingRight="8sp"
+        android:paddingLeft="2sp"
+        android:paddingTop="2sp"
+        android:paddingBottom="2sp"/>
+</RelativeLayout>
